@@ -1,7 +1,7 @@
 package jensen.johan.cloudstoreuserservice.product.model;
 
 public record Product(
-        int id,
+        Long id,
         String title,
         double price,
         String description,
