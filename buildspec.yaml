@@ -1,25 +1,21 @@
 version: 0.2
 
 phases:
-
   pre_build:
     commands:
       - echo Entered prebuild phase
-
-
-    build:
-      commands:
-        - echo Entered build on
+      - pwd
+      - ls la
+  build:
+    commands:
+        - echo Build started on $(date)
         - mvn clean package
-        - dir target
-
-
+        - ls -la target
+        - find . -name "*.jar" -print
     post_build:
       commands:
-        - echo Build completed
-
-
+        - echo Build completed on $(date)
   artifacts:
     files:
       - 'target/*.jar'
-    discard-paths: yes
+    discard-paths: 'yes'
