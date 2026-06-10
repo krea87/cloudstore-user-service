@@ -5,17 +5,18 @@ phases:
     commands:
       - echo Entered prebuild phase
       - pwd
-      - ls la
+      - ls -la
   build:
     commands:
-        - echo Build started on $(date)
-        - mvn clean package
-        - ls -la target
-        - find . -name "*.jar" -print
-    post_build:
-      commands:
-        - echo Build completed on $(date)
-  artifacts:
-    files:
-      - 'target/*.jar'
-    discard-paths: 'yes'
+      - echo Build started on $(date)
+      - mvn clean package
+      - ls -la target
+      - find . -name "*.jar" -print
+  post_build:
+    commands:
+      - echo Build completed on $(date)
+
+artifacts:
+  files:
+    - 'target/*.jar'
+  discard-paths: yes
