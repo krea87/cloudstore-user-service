@@ -1,0 +1,25 @@
+version: 0.2
+
+phases:
+
+  pre_build:
+    commands:
+      - echo Entered prebuild phase
+
+
+    build:
+      commands:
+        - echo Entered build on
+        - mvn clean package
+        - dir target
+
+
+    post_build:
+      commands:
+        - echo Build completed
+
+
+  artifacts:
+    files:
+      - cloudstore-user-service-0.0.1-SNAPSHOT.jar
+    discard-paths: yes

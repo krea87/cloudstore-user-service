@@ -2,6 +2,7 @@ package jensen.johan.cloudstoreuserservice.config;
 
 import jensen.johan.cloudstoreuserservice.repository.user.AppUserRepository;
 import jensen.johan.cloudstoreuserservice.security.JwtAuthenticationFilter;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -25,6 +26,12 @@ import java.util.List;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+
+    private final List<String> allowedOrigins;
+
+    public SecurityConfig(@Value("#{'${app.cors.allowed-origins}'.split(',')}") List<String> allowedOrigins) {
+        this.allowedOrigins = allowedOrigins;
+    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtAuthenticationFilter jwtAuthenticationFilter, CorsConfigurationSource corsConfigurationSource) throws Exception {
@@ -79,11 +86,7 @@ public class SecurityConfig {
         return request -> {
             CorsConfiguration config = new CorsConfiguration();
 
-            config.setAllowedOrigins(List.of(
-                    "http://localhost:5000",
-                    "http://localhost:8080",
-                    "http://localhost:8081"
-            ));
+            config.setAllowedOrigins(allowedOrigins);
             config.setAllowedMethods(List.of(
                     "GET",
                     "POST",

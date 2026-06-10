@@ -12,18 +12,19 @@ import java.util.List;
 public class ProductClient {
 
     private final RestClient restClient;
-    private final String fakestoreServiceUrl = "http://fakestoreservice-env.eba-dnzki35b.eu-north-1.elasticbeanstalk.com/products";
+    @Value("${fakestore-base-url}")
+    private String baseUrl;
 
     public ProductClient(RestClient.Builder builder) {
         this.restClient = builder
-                .baseUrl(fakestoreServiceUrl)
+                .baseUrl(baseUrl)
                 .build();
     }
 
     public List<Product> getProducts() {
         Product[] products = restClient
                 .get()
-                .uri(fakestoreServiceUrl)
+                .uri(baseUrl)
                 .retrieve()
                 .body(Product[].class);
 
