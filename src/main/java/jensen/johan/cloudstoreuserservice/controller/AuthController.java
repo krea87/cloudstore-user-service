@@ -5,10 +5,10 @@ import jensen.johan.cloudstoreuserservice.model.user.dto.AuthResponse;
 import jensen.johan.cloudstoreuserservice.model.user.dto.LoginRequest;
 import jensen.johan.cloudstoreuserservice.model.user.dto.RegisterRequest;
 import jensen.johan.cloudstoreuserservice.service.AuthService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -28,5 +28,11 @@ public class AuthController {
     @PostMapping("/login")
     public AuthResponse login(@RequestBody @Valid LoginRequest request) {
         return authService.login(request);
+    }
+
+    @GetMapping("/me")
+    @PreAuthorize("hasRole('USER')")
+    public AuthResponse getMe(Authentication authentication) {
+        return authService.me(authentication);
     }
 }

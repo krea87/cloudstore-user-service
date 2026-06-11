@@ -12,10 +12,8 @@ import java.util.List;
 public class ProductClient {
 
     private final RestClient restClient;
-    @Value("${fakestore-base-url}")
-    private String baseUrl;
 
-    public ProductClient(RestClient.Builder builder) {
+    public ProductClient(RestClient.Builder builder, @Value("${fakestore-base-url}") String baseUrl) {
         this.restClient = builder
                 .baseUrl(baseUrl)
                 .build();
@@ -24,7 +22,7 @@ public class ProductClient {
     public List<Product> getProducts() {
         Product[] products = restClient
                 .get()
-                .uri(baseUrl)
+                .uri("/api/products")
                 .retrieve()
                 .body(Product[].class);
 

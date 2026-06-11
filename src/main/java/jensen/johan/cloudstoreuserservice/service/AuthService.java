@@ -9,6 +9,7 @@ import jensen.johan.cloudstoreuserservice.security.JwtService;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -58,4 +59,10 @@ public class AuthService {
         String token = jwtService.generateToken(request.email());
         return new AuthResponse(token, request.email());
     }
+
+    public AuthResponse me(Authentication authentication) {
+        String email = authentication.getName();
+        return new AuthResponse(jwtService.generateToken(email), email);
+    }
+
 }
