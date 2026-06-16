@@ -1,0 +1,56 @@
+services:
+  # FRONTEND:
+  frontend:
+    build:
+      context: /home/johan/School/VsCode/React/CloudStore/cloudstore-frontend
+      dockerfile: Dockerfile
+    ports:
+      - "5173:5173"
+    environment:
+      - VITE_API_BASE_URL=http://localhost:5000
+    depends_on:
+      - cloudstore-user-service
+
+  # BACKEND (USER SERVICE):
+  cloudstore-user-service:
+    build:
+      context: /home/johan/IdeaProjects/cloudstore-user-service
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    environment:
+      - DB_URL=jdbc:mysql://mysql-db:3306/test_db
+      - DB_USERNAME=test_user
+      - DB_PASSWORD=test123
+      - PRODUCT_SERVICE_BASE_URL=http://fakestoreservice:5001
+      - JWT_SECRET=XwJFdmA8O+qdKiegzd6nHAwpgM8MQezFoDyvunE0eB2Lx7PR519+8ZcyfcFSGHWJrHFFoxX9foIMyP/Dixeeqw==
+    depends_on:
+      fakestoreservice:
+        condition: service_started
+      mysql-db:
+        condition: service_healthy
+
+  # FAKESTORE SERVICE:
+  fakestoreservice:
+    build:
+      context: /home/johan/IdeaProjects/fakestoreservice
+      dockerfile: Dockerfile
+    ports:
+      - "5001:5001"
+
+  # MYSQL DATABASE:
+  mysql-db:
+    image: mysql:8.0.28
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=1Hundra2"
+      - MYSQL_DATABASE=test_db
+      - MYSQL_USER=test_user
+      - MYSQL_PASSWORD=test123
+    healthcheck:
+      test: [ "CMD-SHELL", "mysqladmin ping -h localhost --silent" ]
+      interval: 3s
+      timeout: 3s
+      retries: 5
+      start_period: 5s
