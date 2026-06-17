@@ -27,18 +27,17 @@ import java.util.List;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private final List<String> allowedOrigins;
+    @Value("${app.cors.allowed-origins}")
+    private List<String> allowedOrigins;
 
-    public SecurityConfig(@Value("#{'${app.cors.allowed-origins}'.split(',')}") List<String> allowedOrigins) {
-        this.allowedOrigins = allowedOrigins;
-    }
+
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtAuthenticationFilter jwtAuthenticationFilter, CorsConfigurationSource corsConfigurationSource) throws Exception {
 
         return http
                 .csrf(csrf -> csrf.disable())
-                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                .cors(cors -> cors.configurationSource(corsConfigurationSource))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
