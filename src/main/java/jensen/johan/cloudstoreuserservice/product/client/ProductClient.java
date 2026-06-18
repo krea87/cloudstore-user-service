@@ -13,7 +13,7 @@ public class ProductClient {
 
     private final RestClient restClient;
 
-    public ProductClient(RestClient.Builder builder, @Value("${fakestore-base-url}") String baseUrl) {
+    public ProductClient(RestClient.Builder builder, @Value("${fakestore-url}") String baseUrl) {
         this.restClient = builder
                 .baseUrl(baseUrl)
                 .build();
