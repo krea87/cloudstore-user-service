@@ -27,17 +27,12 @@ import java.util.List;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    @Value("${app.cors.allowed-origins}")
-    private List<String> allowedOrigins;
-
-
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtAuthenticationFilter jwtAuthenticationFilter, CorsConfigurationSource corsConfigurationSource) throws Exception {
 
         return http
                 .csrf(csrf -> csrf.disable())
-                .cors(cors -> cors.configurationSource(corsConfigurationSource))
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
@@ -85,7 +80,14 @@ public class SecurityConfig {
         return request -> {
             CorsConfiguration config = new CorsConfiguration();
 
-            config.setAllowedOrigins(allowedOrigins);
+            config.setAllowedOrigins(List.of(
+                    "http://localhost:5173",
+                    "http://localhost:5174",
+                    "http://localhost:5001",
+                    "http://localhost:8001",
+                    "https://johans-cloudstore.netlify.app/",
+                    "http://fakestore-service-env.eba-nxxj3k3q.eu-north-1.elasticbeanstalk.com"
+            ));
             config.setAllowedMethods(List.of(
                     "GET",
                     "POST",
