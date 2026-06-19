@@ -85,7 +85,7 @@ public class SecurityConfig {
                     "http://localhost:5174",
                     "http://localhost:5001",
                     "http://localhost:8001",
-                    "https://johans-cloudstore.netlify.app/",
+                    "https://johans-cloudstore.netlify.app",
                     "http://fakestore-service-env.eba-nxxj3k3q.eu-north-1.elasticbeanstalk.com"
             ));
             config.setAllowedMethods(List.of(
