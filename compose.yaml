@@ -24,7 +24,7 @@ services:
       - DB_USERNAME=test_user
       - DB_PASSWORD=test123
       - FAKESTORE_URL=http://fakestoreservice:5001
-      - JWT_SECRET=XwJFdmA8O+qdKiegzd6nHAwpgM8MQezFoDyvunE0eB2Lx7PR519+8ZcyfcFSGHWJrHFFoxX9foIMyP/Dixeeqw==
+      - JWT_SECRET=${JWT_SECRET}
     depends_on:
       fakestoreservice:
         condition: service_started
@@ -43,6 +43,10 @@ services:
       - DB_URL=jdbc:mysql://mysql-db:3306/test_db
       - DB_USERNAME=test_user
       - DB_PASSWORD=test123
+      - JWT_SECRET=${JWT_SECRET}
+    depends_on:
+      mysql-db:
+        condition: service_healthy
 
   # MYSQL DATABASE:
   mysql-db:

@@ -3,19 +3,19 @@ version: 0.2
 phases:
   pre_build:
     commands:
-      - echo Entered prebuild phase
-      - pwd
-      - ls -la
+      - echo Logging in to Docker Hub
+      - echo "$DOCKERHUB_PASSWORD" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
   build:
     commands:
       - echo Build started on $(date)
       - mvn clean package
-      - ls -la target
-      - find . -name "*.jar" -print
+      - echo Building Docker image
+      - docker build -t krea87/cloudstore-user-service:latest .
   post_build:
     commands:
       - echo Build completed on $(date)
-
+      - echo Pushing image to Docker Hub
+      - docker push krea87/cloudstore-user-service:latest
 artifacts:
   files:
     - 'target/*.jar'
